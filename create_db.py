@@ -1,2 +1,2 @@
-from main import db
-db.create_all()
+# from main import db
+# db.create_all()

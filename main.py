@@ -3,7 +3,9 @@ from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin, BaseView, expose
 from flask_login import current_user, login_user, LoginManager, UserMixin
+from flask_sqlalchemy.model import Model
 from werkzeug.utils import redirect
+from flask_admin.contrib.sqla import ModelView
 # from database import db, Students, Teachers, Admin
 
 app = Flask(__name__)
@@ -15,6 +17,9 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 app.secret_key = 'keep it secret, keep it safe'
+
+
+
 
 
 class Students(UserMixin, db.Model):
@@ -52,7 +57,7 @@ class Teachers(UserMixin, db.Model):
     classes = db.relationship('Classes', backref='Teachers', lazy=True)
 
 
-class Admin(db.Model):
+class Admins(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
     username = db.Column(db.String, unique=True, nullable=False)
@@ -88,6 +93,7 @@ class Enrollment(db.Model):
         Students.id))
     grade = db.Column(db.Integer)
 
+db.create_all()
 
 # admin = Admin(name='admin', username='AdminAccount', password='123')
 # db.session.add(admin)
@@ -98,6 +104,13 @@ class Enrollment(db.Model):
 # admin page done with flask-admin
 
 # Flask-Login lecture 18 page 15
+
+admin.add_view(ModelView(Classes, db.session))
+admin.add_view(ModelView(Admins, db.session))
+admin.add_view(ModelView(Students, db.session))
+admin.add_view(ModelView(Teachers, db.session))
+
+
 
 @login_manager.user_loader
 def load_student(user_id):
@@ -145,54 +158,54 @@ def student():
     return render_template('student.html')
 
 
-class CreatePage(BaseView):
-    @expose('/', methods=['GET', 'POST'])
-    def createUser(self):
+# class CreatePage(BaseView):
+#     @expose('/', methods=['GET', 'POST'])
+#     def createUser(self):
 
-        if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
-            username = ''
-            password = ''
-            username += request.form['username']
-            password += request.form['password']
-            name = request.form['name']
-            permission = request.form['permType']
+#         if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
+#             username = ''
+#             password = ''
+#             username += request.form['username']
+#             password += request.form['password']
+#             name = request.form['name']
+#             permission = request.form['permType']
 
-            if(permission == 'student'):
-                newEntry = Students(username=username,
-                                    password=password, name=name)
-                db.session.add(newEntry)
-                db.session.commit()
-            elif(permission == 'teacher'):
-                newEntry = Teachers(username=username,
-                                    password=password, name=name)
-                db.session.add(newEntry)
-                db.session.commit()
+#             if(permission == 'student'):
+#                 newEntry = Students(username=username,
+#                                     password=password, name=name)
+#                 db.session.add(newEntry)
+#                 db.session.commit()
+#             elif(permission == 'teacher'):
+#                 newEntry = Teachers(username=username,
+#                                     password=password, name=name)
+#                 db.session.add(newEntry)
+#                 db.session.commit()
 
-        return self.render('create.html')
-
-
-class ReadUsers(BaseView):
-    @expose('/')
-    def index(self):
-        return self.render('admin.html')
+#         return self.render('create.html')
 
 
-class EditPage(BaseView):
-    @expose('/')
-    def index(self):
-        return self.render('admin.html')
+# class ReadUsers(BaseView):
+#     @expose('/')
+#     def index(self):
+#         return self.render('admin.html')
 
 
-class DeleteUser(BaseView):
-    @expose('/')
-    def index(self):
-        return self.render('admin.html')
+# class EditPage(BaseView):
+#     @expose('/')
+#     def index(self):
+#         return self.render('admin.html')
 
 
-admin.add_view(CreatePage(name='Create'))
-admin.add_view(ReadUsers(name='Read'))
-admin.add_view(EditPage(name='Edit'))
-admin.add_view(DeleteUser(name='Delete'))
+# class DeleteUser(BaseView):
+#     @expose('/')
+#     def index(self):
+#         return self.render('admin.html')
+
+
+# admin.add_view(CreatePage(name='Create'))
+# admin.add_view(ReadUsers(name='Read'))
+# admin.add_view(EditPage(name='Edit'))
+# admin.add_view(DeleteUser(name='Delete'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="localhost", port=8000, debug=True)
