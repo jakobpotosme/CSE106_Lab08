@@ -175,7 +175,7 @@ def login():
 @ login_required
 def student(currentStudentId):
     # def classInfo():
-    #     classes = Classes.query.order_by(Classes.id).all()
+    # allClasses = Classes.query.order_by(Classes.id).all()
     #     return classes
     # currentStudent = Students.query.filter_by(user_id=currentStudentId).first()
 
@@ -190,6 +190,8 @@ def student(currentStudentId):
 
     # q = db.session.query(Enrollment, Classes).filter(
     #     Enrollment.class_id == Classes.id).filter(Enrollment.student_id == currentStudentId).all()
+    allClasses = Classes.query.order_by(Classes.id).all()
+
     q = db.session.query(Enrollment).filter(
         Enrollment.student_id == currentStudentId).all()
     # print(q)
@@ -199,16 +201,19 @@ def student(currentStudentId):
         # print(temp)
         classes.append(Classes.query.filter_by(id=temp).first())
         # break
+    teachers = []
 
-    teachers = db.session.query(Teachers).filter_by(
-        Teachers.id == Classes.teacher_id).all()
+    for i in classes:
+        # print(i.teacher_id)
+        teachers.append(Teachers.query.filter_by(id=i.teacher_id).first())
 
-    for x in teachers:
-        print(x)
+    # x = db.session.query(Teachers).filter_by(
+    #     Teachers.id == Classes.teacher_id).all()
+
     # classes = Classes.query.filter_by(id=temp).all()
     # print(classes)
     # return render_template('student.html', enrollmentTable=enrollmentTable, classInfo=classes)
-    return render_template('student.html', classInfo=classes)
+    return render_template('student.html', classInfo=classes, teachers=teachers, allClasses=allClasses)
 
 
 @ app.route('/logout', methods=['POST'])

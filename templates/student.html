@@ -17,36 +17,24 @@
             <th>Students Enrolled</th>
         </tr>
     </div>
-    {% for row in classInfo %}
+
+    {% for row in range(0,classInfo|length ) %}
     <tr>
 
         <td>
-            {{row.courseName}}
+            {{classInfo[row].courseName}}
         </td>
         <td>
-            {{row.teacher_id}}
+            {{ teachers[row].name }}
         </td>
         <td>
-            {{row.time}}
+            {{classInfo[row].time}}
         </td>
         <td>
-            {{row.numEnrolled}}
+            {{classInfo[row].numEnrolled}}
         </td>
 
     </tr>
     {% endfor %}
-    <tr>
-        <td>
-            CSE Test Course
-        </td>
-        <td>
-            Teacher 1
-        </td>
-        <td>
-            F 12:10-1:10 PM
-        </td>
-        <td>
-            5/10
-        </td>
-    </tr>
 </table>
+
