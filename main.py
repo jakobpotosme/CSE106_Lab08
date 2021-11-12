@@ -188,11 +188,27 @@ def student(currentStudentId):
     #     print(classId)
     # classes = Classes.query.filter_by(id=currentStudentId).all()
 
-    q = db.session.query(Enrollment, Classes).filter(
-        Enrollment.class_id == Classes.id).filter(Enrollment.student_id == currentStudentId).all()
-    print(q)
+    # q = db.session.query(Enrollment, Classes).filter(
+    #     Enrollment.class_id == Classes.id).filter(Enrollment.student_id == currentStudentId).all()
+    q = db.session.query(Enrollment).filter(
+        Enrollment.student_id == currentStudentId).all()
+    # print(q)
+    classes = []
+    for i in q:
+        temp = i.class_id
+        # print(temp)
+        classes.append(Classes.query.filter_by(id=temp).first())
+        # break
+
+    teachers = db.session.query(Teachers).filter_by(
+        Teachers.id == Classes.teacher_id).all()
+
+    for x in teachers:
+        print(x)
+    # classes = Classes.query.filter_by(id=temp).all()
+    # print(classes)
     # return render_template('student.html', enrollmentTable=enrollmentTable, classInfo=classes)
-    return render_template('student.html', classInfo=q)
+    return render_template('student.html', classInfo=classes)
 
 
 @ app.route('/logout', methods=['POST'])
