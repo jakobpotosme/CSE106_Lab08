@@ -1,6 +1,52 @@
-<h1>{{student.name}}</h1>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
+
 <h1>test</h1>
 
 <form action="/logout" method="post">
     <button id='logoutBtn' onclick="logout()">Logout</button>
 </form>
+
+<h1>Your Courses</h1>
+<table>
+    <div>
+        <tr>
+            <th>Course Name</th>
+            <th>Teacher</th>
+            <th>Time</th>
+            <th>Students Enrolled</th>
+        </tr>
+    </div>
+    {% for row in classInfo %}
+    <tr>
+
+        <td>
+            {{row.courseName}}
+        </td>
+        <td>
+            {{row.teacher_id}}
+        </td>
+        <td>
+            {{row.time}}
+        </td>
+        <td>
+            {{row.numEnrolled}}
+        </td>
+
+    </tr>
+    {% endfor %}
+    <tr>
+        <td>
+            CSE Test Course
+        </td>
+        <td>
+            Teacher 1
+        </td>
+        <td>
+            F 12:10-1:10 PM
+        </td>
+        <td>
+            5/10
+        </td>
+    </tr>
+</table>

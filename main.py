@@ -1,9 +1,11 @@
-from flask import Flask, request, url_for
+from flask import Flask, request, url_for, jsonify
 from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin, BaseView, expose
 from flask_login import current_user, login_user, LoginManager, UserMixin, logout_user, login_required
 from flask_sqlalchemy.model import Model
+from sqlalchemy.orm import query
+from sqlalchemy.orm.session import Session
 from werkzeug.utils import redirect
 from flask_admin.contrib.sqla import ModelView
 # from database import db, Students, Teachers, Admin
@@ -110,6 +112,7 @@ admin.add_view(ModelView(Admins, db.session))
 admin.add_view(ModelView(Students, db.session))
 admin.add_view(ModelView(Teachers, db.session))
 admin.add_view(ModelView(Users, db.session))
+admin.add_view(ModelView(Enrollment, db.session))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -126,7 +129,9 @@ def login():
             return redirect(url_for('login'))
         else:
             login_user(user)
+
             userType = Students.query.filter_by(user_id=user.id).first()
+            # print(userType.id)
             if userType is None:
                 print('Was not a student...checking teacher')
                 userType = Teachers.query.filter_by(user_id=user.id).first()
@@ -137,7 +142,9 @@ def login():
                     return render_template('teacher.html', teacher=userType)
             else:
                 print('Successfully logging in student')
-                return render_template('student.html', student=userType)
+                # print(user.id)
+                return redirect(url_for('student', currentStudentId=userType.id))
+                # return render_template('student.html', student=userType)
 
         # if(permission == 'student'):
         #     user = Users.query.filter_by(username=username).first()
@@ -164,14 +171,32 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/student', methods=['GET', 'POST'])
-@login_required
-def student():
-    return render_template('student.html')
+@ app.route('/student/<int:currentStudentId>', methods=['GET', 'POST'])
+@ login_required
+def student(currentStudentId):
+    # def classInfo():
+    #     classes = Classes.query.order_by(Classes.id).all()
+    #     return classes
+    # currentStudent = Students.query.filter_by(user_id=currentStudentId).first()
+
+    # enrollmentTable = Enrollment.query.filter_by(
+    #     student_id=currentStudentId).order_by(Enrollment.id).all()
+    # a = enrollmentTable
+    # print(a.student_id)
+    # for i in enrollmentTable:
+    #     classId = i.class_id
+    #     print(classId)
+    # classes = Classes.query.filter_by(id=currentStudentId).all()
+
+    q = db.session.query(Enrollment, Classes).filter(
+        Enrollment.class_id == Classes.id).filter(Enrollment.student_id == currentStudentId).all()
+    print(q)
+    # return render_template('student.html', enrollmentTable=enrollmentTable, classInfo=classes)
+    return render_template('student.html', classInfo=q)
 
 
-@app.route('/logout', methods=['POST'])
-@login_required
+@ app.route('/logout', methods=['POST'])
+@ login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
