@@ -138,7 +138,6 @@ def login():
         password = ''
         username += request.form['username']
         password += request.form['password']
-        permission = request.form['permType']
 
         user = Users.query.filter_by(username=username).first()
 
@@ -146,7 +145,6 @@ def login():
             return redirect(url_for('login'))
         else:
             # login_user(user)
-            # print(user.get_id)
             userType = Students.query.filter_by(user_id=user.id).first()
             if userType is None:
                 print('Was not a student...checking teacher')
@@ -155,10 +153,10 @@ def login():
                     print('not student or teacher...redirecting to admin')
                     return redirect(url_for('admin'))
                 else:
-                    return render_template('teacher.html', teacher=user)
+                    return render_template('teacher.html', teacher=userType)
             else:
                 print('Successfully logging in student')
-                return render_template('student.html', student=user)
+                return render_template('student.html', student=userType)
 
         # if(permission == 'student'):
         #     user = Users.query.filter_by(username=username).first()
