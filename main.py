@@ -24,11 +24,14 @@ class Users(UserMixin, db.Model):
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, unique=False, nullable=False)
     studentConnect = db.relationship(
-         'Students', backref='users', lazy=True)
+        'Students', backref='users', lazy=True)
     teachersConnect = db.relationship(
-         'Teachers', backref='users', lazy=True)
+        'Teachers', backref='users', lazy=True)
     adminConnect = db.relationship(
-         'Admins', backref='users', lazy=True)
+        'Admins', backref='users', lazy=True)
+
+    def check_password(self, password):
+        return self.password == password
 
 
 class Students(UserMixin, db.Model):
@@ -73,7 +76,6 @@ class Admins(db.Model):
         Users.id), nullable=False)
 
 
-
 class Classes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     courseName = db.Column(db.String, unique=True, nullable=False)
@@ -103,6 +105,7 @@ class Enrollment(db.Model):
         Students.id))
     grade = db.Column(db.Integer)
 
+
 db.create_all()
 
 # admin = Admin(name='admin', username='AdminAccount', password='123')
@@ -113,7 +116,6 @@ db.create_all()
 # @app.route('/teacherview')
 # admin page done with flask-admin
 
-# Flask-Login lecture 18 page 15
 
 admin.add_view(ModelView(Classes, db.session))
 admin.add_view(ModelView(Admins, db.session))
@@ -121,16 +123,12 @@ admin.add_view(ModelView(Students, db.session))
 admin.add_view(ModelView(Teachers, db.session))
 admin.add_view(ModelView(Users, db.session))
 
+# Flask-Login lecture 18 page 15
 
 
 @login_manager.user_loader
-def load_student(user_id):
-    return Students.get_id(user_id)
-
-
-@login_manager.user_loader
-def load_teacher(user_id):
-    return Teachers.get_id(user_id)
+def load_user(user_id):
+    return Users.get_id(user_id)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -142,24 +140,47 @@ def login():
         password += request.form['password']
         permission = request.form['permType']
 
-        if(permission == 'student'):
-            user = Students.query.filter_by(username=username).first()
-            if(user is None):
+        user = Users.query.filter_by(username=username).first()
 
-                return 'no account found'
+        if user is None or user.check_password(password) is None:
+            return redirect(url_for('login'))
+        else:
+            # login_user(user)
+            # print(user.get_id)
+            userType = Students.query.filter_by(user_id=user.id).first()
+            if userType is None:
+                print('Was not a student...checking teacher')
+                userType = Teachers.query.filter_by(user_id=user.id).first()
+                if userType is None:
+                    print('not student or teacher...redirecting to admin')
+                    return redirect(url_for('admin'))
+                else:
+                    return render_template('teacher.html', teacher=user)
             else:
-                # login_user(user)
-                # return redirect(url_for('student'))
+                print('Successfully logging in student')
                 return render_template('student.html', student=user)
-        elif(permission == 'teacher'):
-            user = Teachers.query.filter_by(username=username).first()
-            if(user is None):
 
-                return 'no account found'
-            else:
-                # login_user(user)
-                print('Logged in Successfully')
-                return render_template('teacher.html', teacher=user)
+        # if(permission == 'student'):
+        #     user = Users.query.filter_by(username=username).first()
+        #     password = user.check_password(password)
+        #     if(user is None or password is None):
+
+        #         return redirect(url_for('login'))
+        #     else:
+        #         # login_user(user)
+        #         # return redirect(url_for('student'))
+        #         login_user(user)
+        #         return render_template('student.html', student=user)
+        # elif(permission == 'teacher'):
+        #     user = Users.query.filter_by(username=username).first()
+        #     password = user.check_password(password)
+        #     if(user is None or ):
+
+        #         return redirect(url_for('login'))
+        #     else:
+        #         login_user(user)
+        #         print('Logged in Successfully')
+        #         return render_template('teacher.html', teacher=user)
 
     return render_template('login.html')
 
