@@ -2,7 +2,7 @@ from flask import Flask, request, url_for
 from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin, BaseView, expose
-from flask_login import current_user, login_user, LoginManager, UserMixin
+from flask_login import current_user, login_user, LoginManager, UserMixin, logout_user, login_required
 from flask_sqlalchemy.model import Model
 from werkzeug.utils import redirect
 from flask_admin.contrib.sqla import ModelView
@@ -13,14 +13,20 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///example.sqlite"
 db = SQLAlchemy(app)
 admin = Admin(app)
 
+app.secret_key = 'keep it secret, keep it safe'
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-app.secret_key = 'keep it secret, keep it safe'
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
 
 
 class Users(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    # user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, unique=False, nullable=False)
     studentConnect = db.relationship(
@@ -41,24 +47,6 @@ class Students(UserMixin, db.Model):
         Users.id), nullable=False)
     studentEnrollment = db.relationship(
         'Enrollment', backref='Students', lazy=True)
-
-    # def is_authenticated(self, username, password):
-    #     if self.username == username and self.password == password:
-    #         return True
-    #     else:
-    #         return False
-
-    # def is_anonymous(self, username):
-    #     if self.username != username:
-    #         return True
-    #     else:
-    #         return False
-
-    # def get_id(self):
-    #     return self.id
-
-    # def check_password(self, password):
-    #     return self.password == password
 
 
 class Teachers(UserMixin, db.Model):
@@ -123,13 +111,6 @@ admin.add_view(ModelView(Students, db.session))
 admin.add_view(ModelView(Teachers, db.session))
 admin.add_view(ModelView(Users, db.session))
 
-# Flask-Login lecture 18 page 15
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return Users.get_id(user_id)
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -144,14 +125,14 @@ def login():
         if user is None or user.check_password(password) is None:
             return redirect(url_for('login'))
         else:
-            # login_user(user)
+            login_user(user)
             userType = Students.query.filter_by(user_id=user.id).first()
             if userType is None:
                 print('Was not a student...checking teacher')
                 userType = Teachers.query.filter_by(user_id=user.id).first()
                 if userType is None:
                     print('not student or teacher...redirecting to admin')
-                    return redirect(url_for('admin'))
+                    return redirect(url_for('login'))
                 else:
                     return render_template('teacher.html', teacher=userType)
             else:
@@ -184,8 +165,16 @@ def login():
 
 
 @app.route('/student', methods=['GET', 'POST'])
+@login_required
 def student():
     return render_template('student.html')
+
+
+@app.route('/logout', methods=['POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 
 # class CreatePage(BaseView):
@@ -236,6 +225,5 @@ def student():
 # admin.add_view(ReadUsers(name='Read'))
 # admin.add_view(EditPage(name='Edit'))
 # admin.add_view(DeleteUser(name='Delete'))
-
 if __name__ == '__main__':
     app.run(host="localhost", port=8000, debug=True)
