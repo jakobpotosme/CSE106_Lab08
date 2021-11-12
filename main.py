@@ -190,6 +190,7 @@ def student(currentStudentId):
 
     # q = db.session.query(Enrollment, Classes).filter(
     #     Enrollment.class_id == Classes.id).filter(Enrollment.student_id == currentStudentId).all()
+    currentStudent = Students.query.filter_by(id=currentStudentId).first()
     allClasses = Classes.query.order_by(Classes.id).all()
 
     q = db.session.query(Enrollment).filter(
@@ -213,10 +214,34 @@ def student(currentStudentId):
     # classes = Classes.query.filter_by(id=temp).all()
     # print(classes)
     # return render_template('student.html', enrollmentTable=enrollmentTable, classInfo=classes)
-    return render_template('student.html', classInfo=classes, teachers=teachers, allClasses=allClasses)
+    return render_template('student.html', classInfo=classes, teachers=teachers, allClasses=allClasses, student=currentStudent)
 
 
-@ app.route('/logout', methods=['POST'])
+@app.route('/register', methods=["POST"])
+@ login_required
+def register():
+
+    courseId = request.form['submitBtn']
+    studentId = request.form['student']
+    # print(courseId)
+    # print(studentId)
+    # return courseId
+
+    currentClassInfo = Classes.query.filter_by(id=courseId).first()
+    print(currentClassInfo.numEnrolled)
+
+    # need to check if the student also isnt already apart of the class
+    if(currentClassInfo.numEnrolled <= currentClassInfo.capacity):
+        newEntry = Enrollment(
+            class_id=currentClassInfo.id, student_id=studentId)
+        db.session.add(newEntry)
+        db.session.commit()
+        return "success"
+    else:
+        return "Class full!"
+
+
+@app.route('/logout', methods=['POST'])
 @ login_required
 def logout():
     logout_user()

@@ -1,6 +1,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
 </script>
 
+<h1> Welcome {{student.name}}!</h1>
 <h1>test</h1>
 
 <form action="/logout" method="post">
@@ -38,3 +39,45 @@
     {% endfor %}
 </table>
 
+<br>
+<h1>Add Courses</h1>
+<form action='/register' method="post">
+    <table>
+        <div>
+            <tr>
+                <th>Course Name</th>
+                <th>Teacher</th>
+                <th>Time</th>
+                <th>Students Enrolled</th>
+                <th>Capacity</th>
+                <th>Add Class</th>
+            </tr>
+        </div>
+
+        {% for row in range(0,allClasses|length ) %}
+        <tr>
+
+            <td name="courseName">
+                {{allClasses[row].courseName}}
+            </td>
+            <td name="teacherName">
+                teacher goes here
+            </td>
+            <td name="courseTime">
+                {{allClasses[row].time}}
+            </td>
+            <td name="courseTotalEnrolled">
+                {{allClasses[row].numEnrolled}}
+            </td>
+            <td name="courseTotalCapacity">
+                {{allClasses[row].capacity}}
+            </td>
+            <input type="hidden" name='student' value="{{student.id}}" />
+            <td>
+                <button value="{{ allClasses[row].id }}" name="submitBtn" type="submit">Add</button>
+            </td>
+
+        </tr>
+        {% endfor %}
+    </table>
+</form>
