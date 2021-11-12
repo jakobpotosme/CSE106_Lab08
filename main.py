@@ -19,14 +19,23 @@ login_manager.login_view = 'login'
 app.secret_key = 'keep it secret, keep it safe'
 
 
-
+class Users(UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, unique=True, nullable=False)
+    password = db.Column(db.String, unique=False, nullable=False)
+    studentConnect = db.relationship(
+         'Students', backref='users', lazy=True)
+    teachersConnect = db.relationship(
+         'Teachers', backref='users', lazy=True)
+    adminConnect = db.relationship(
+         'Admins', backref='users', lazy=True)
 
 
 class Students(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=False, nullable=False)
-    username = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, unique=False, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        Users.id), nullable=False)
     studentEnrollment = db.relationship(
         'Enrollment', backref='Students', lazy=True)
 
@@ -52,16 +61,17 @@ class Students(UserMixin, db.Model):
 class Teachers(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=False, nullable=False)
-    username = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, unique=False, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        Users.id), nullable=False)
     classes = db.relationship('Classes', backref='Teachers', lazy=True)
 
 
 class Admins(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
-    username = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        Users.id), nullable=False)
+
 
 
 class Classes(db.Model):
@@ -109,6 +119,7 @@ admin.add_view(ModelView(Classes, db.session))
 admin.add_view(ModelView(Admins, db.session))
 admin.add_view(ModelView(Students, db.session))
 admin.add_view(ModelView(Teachers, db.session))
+admin.add_view(ModelView(Users, db.session))
 
 
 
