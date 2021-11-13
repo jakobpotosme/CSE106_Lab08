@@ -171,6 +171,35 @@ def login():
     return render_template('login.html')
 
 
+@ app.route('/teacher/<int:currentTeacherId>', methods=['GET', 'POST'])
+@ login_required
+def teacher(currentTeacherId):
+
+    q = db.session.query(Classes).filter(
+        Classes.teacher_id == currentTeacherId).all()
+    print(q)
+    classes = []
+    for i in q:
+        # temp = i.courseName
+        # print(temp)
+        classes.append(i)
+        # break
+    teachers = []
+
+    for i in classes:
+        # print(i.teacher_id)
+        teachers.append(Teachers.query.filter_by(id=i.teacher_id).first())
+
+    # x = db.session.query(Teachers).filter_by(
+    #     Teachers.id == Classes.teacher_id).all()
+
+    # classes = Classes.query.filter_by(id=temp).all()
+    # print(classes)
+    # return render_template('student.html', enrollmentTable=enrollmentTable, classInfo=classes)
+    return render_template('teacher.html', classInfo=classes, teachers=teachers)
+
+
+
 @ app.route('/student/<int:currentStudentId>', methods=['GET', 'POST'])
 @ login_required
 def student(currentStudentId):

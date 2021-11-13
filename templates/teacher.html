@@ -24,13 +24,24 @@
                 <th>Time</th>
                 <th>Student Enrolled</th>
             </tr>
-            <tr>
-                <td>
-                    <div id="text" onCLick="">
-                     CS 162   
-                    </div>
-                </td>
-            </tr>
+            {% for row in range(0,classInfo|length ) %}
+        <tr>
+
+            <td>
+                {{classInfo[row].courseName}}
+            </td>
+            <td>
+                {{ teachers[row].name }}
+            </td>
+            <td>
+                {{classInfo[row].time}}
+            </td>
+            <td>
+                {{classInfo[row].numEnrolled}}
+            </td>
+
+        </tr>
+        {% endfor %}
         </table>   
         </div>
     </body>
