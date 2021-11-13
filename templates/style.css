@@ -1,0 +1,17 @@
+input[type=text] {
+  display: list-item;
+  padding: 10px;
+  margin-bottom: 5px;
+  border: 2px solid darkblue;
+}
+#outer-box{
+  margin: 100px;
+  padding: 50px;
+  width: 70%;
+  background-color: #4267B2;
+  border: 4px solid darkblue;
+  border-radius: 25px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
