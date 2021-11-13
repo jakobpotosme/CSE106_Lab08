@@ -2,7 +2,6 @@
 </script>
 
 <h1> Welcome {{student.name}}!</h1>
-<h1>test</h1>
 
 <form action="/logout" method="post">
     <button id='logoutBtn' onclick="logout()">Logout</button>
@@ -55,6 +54,7 @@
         </div>
 
         {% for row in range(0,allClasses|length ) %}
+        {% print(row)%}
         <tr>
 
             <td name="courseName">
@@ -74,8 +74,10 @@
             </td>
             <input type="hidden" name='student' value="{{student.id}}" />
             <td>
-                <button value="{{ allClasses[row].id }}" name="submitBtn" type="submit">Add</button>
+                <button value="{{ allClasses[row].id }}" name="submitBtn" id="submit" type="submit">Add</button>
+                <div id="resultbox"></div>
             </td>
+            
 
         </tr>
         {% endfor %}

@@ -1,4 +1,4 @@
-from flask import Flask, request, url_for, jsonify
+from flask import Flask, json, request, url_for, jsonify
 from flask.templating import render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin, BaseView, expose
@@ -41,6 +41,9 @@ class Users(UserMixin, db.Model):
     def check_password(self, password):
         return self.password == password
 
+    def __repr__(self):
+        return '%r' % (self.id)
+
 
 class Students(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -50,6 +53,9 @@ class Students(UserMixin, db.Model):
     studentEnrollment = db.relationship(
         'Enrollment', backref='Students', lazy=True)
 
+    def __repr__(self):
+        return '%r' % (self.name)
+
 
 class Teachers(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -58,12 +64,18 @@ class Teachers(UserMixin, db.Model):
         Users.id), nullable=False)
     classes = db.relationship('Classes', backref='Teachers', lazy=True)
 
+    def __repr__(self):
+        return '%r' % (self.name)
+
 
 class Admins(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey(
         Users.id), nullable=False)
+
+    def __repr__(self):
+        return '%r' % (self.name)
 
 
 class Classes(db.Model):
@@ -76,6 +88,9 @@ class Classes(db.Model):
     time = db.Column(db.String, unique=False, nullable=False)
     classEnrollment = db.relationship(
         'Enrollment', backref='Classes', lazy=True)
+
+    def __repr__(self):
+        return '%r' % (self.courseName)
 
 # Enrollment = db.table('Enrollment',
 #                       db.Column('id', db.Integer, primary_key=True),
@@ -94,6 +109,9 @@ class Enrollment(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey(
         Students.id))
     grade = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<Enrollment %r>' % (self.id)
 
 
 db.create_all()
@@ -228,17 +246,23 @@ def register():
     # return courseId
 
     currentClassInfo = Classes.query.filter_by(id=courseId).first()
-    print(currentClassInfo.numEnrolled)
+    # print(currentClassInfo.numEnrolled)
 
     # need to check if the student also isnt already apart of the class
-    if(currentClassInfo.numEnrolled <= currentClassInfo.capacity):
+    exists = db.session.query(Enrollment.class_id).filter_by(
+        class_id=courseId).first() is not None
+    # print(exists)
+
+    if(currentClassInfo.numEnrolled < currentClassInfo.capacity and exists == False):
         newEntry = Enrollment(
             class_id=currentClassInfo.id, student_id=studentId)
         db.session.add(newEntry)
         db.session.commit()
-        return "success"
+        return jsonify({'response': 'success'})
+    elif(exists is True):
+        return 'You are already in this course!'
     else:
-        return "Class full!"
+        return jsonify({'response': 'Class Full!'})
 
 
 @app.route('/logout', methods=['POST'])
