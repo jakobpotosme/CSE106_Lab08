@@ -28,7 +28,10 @@
         <tr>
 
             <td>
-                {{classInfo[row].courseName}}
+                <p><a href="/studentsincourse/{{classInfo[row].courseName}}/{{ teachers[row].id }}">
+                    {{classInfo[row].courseName}}
+                </a>
+                </p>
             </td>
             <td>
                 {{ teachers[row].name }}
