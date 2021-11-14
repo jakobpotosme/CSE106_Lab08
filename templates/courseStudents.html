@@ -8,13 +8,13 @@
 </form>
 
 <h1>  {{table[0][0]}}</h1>
-
+<form action="/editgrade", method="Post">
 <table>
     <div>
         <tr>
             <th>Student Name</th>
-            <th>Grade</th>
-            
+            <th>Grade</th>    
+            <th>Edit Grade</th>
         </tr>
     </div>
 
@@ -25,14 +25,24 @@
             {{table[row][2]}}
         </td>
         <td>
-            <p><a href="/editgrade/">
+            <p><a href="/editgrade/{{table[row][1].student_id}}/{{table[row][1].class_id}}">
                 {{ table[row][1].grade}}
             </a>
             </p>
             
+        </td>
+        
+            
+        
+        <td>
+            <input type="hidden" name='studentid' value="{{table[row][1].student_id}}" />
+            <input type="hidden" name='classid' value="{{table[row][1].class_id}}" />
+            <input type="text" id="grade" name="grade" value="">
+            <input type="submit" value="Submit">
         </td>
       
 
     </tr>
     {% endfor %}
 </table>
+</form>
