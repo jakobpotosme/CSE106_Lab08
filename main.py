@@ -172,12 +172,7 @@ def teacher(currentTeacherId):
         # print(i.teacher_id)
         teachers.append(Teachers.query.filter_by(id=i.teacher_id).first())
 
-    # x = db.session.query(Teachers).filter_by(
-    #     Teachers.id == Classes.teacher_id).all()
 
-    # classes = Classes.query.filter_by(id=temp).all()
-    # print(classes)
-    # return render_template('student.html', enrollmentTable=enrollmentTable, classInfo=classes)
     return render_template('teacher.html', classInfo=classes, teachers=teachers)
 
 
@@ -211,6 +206,50 @@ def student(currentStudentId):
         teachers.append(Teachers.query.filter_by(id=i.teacher_id).first())
 
     return render_template('student.html', classInfo=classes, teachers=teachers, allClasses=allClasses, student=currentStudent)
+
+@app.route('/studentsincourse/<string:coursename>/<int:teacherid>', methods=["GET"])
+@ login_required
+def studentsincourse(coursename, teacherid):
+
+
+    q = db.session.query(Classes, Enrollment, Students).filter(Classes.teacher_id == teacherid).filter(Classes.courseName == coursename).filter(Classes.id == Enrollment.class_id).filter(Enrollment.student_id == Students.id).all()
+    # q = (db.session.query(Classes, Enrollment, Students)
+    #     .join(Classes)
+    #     .join(Enrollment)
+    #     .join(Students)
+    #     .filter(Classes.teacher_id == teacherid, Classes.courseName == coursename, Classes.id == Enrollment.class_id, Enrollment.student_id == Students.id)).all()
+    studentnames = []
+    studentgrades = []
+    for j in q:
+        print(j)
+    for i in range(0,len(q)):
+        studentnames.append(q[i][2])
+        studentgrades.append(q[i][1].grade)
+        #print(q[i][2])
+        print(q[i][1].student_id)
+
+    # classList = db.session.query(Classes).filter(Classes.teacher_id==teacherid, Classes.courseName == coursename).all()
+    # #enrollment = db.session.query(Enrollment).filter(Enrollment.class_id == ClassList.id).all()
+    # classeslist = []
+    # for i in classList:
+    #     enrollment = db.session.query(Enrollment).filter(Enrollment.class_id == i.id).all()
+    #     classeslist.append(enrollment)
+        
+    #     # break
+    # studentlist = []
+    # for i in range(0,len(classeslist)):
+    #     for j in range(0,len(classeslist[i])):
+    #         enrollment = db.session.query(Students).filter(Students.id == classeslist[i][j].student_id).all()
+    #         print(enrollment)
+    #         studentlist.append(enrollment)
+        
+    #     # break
+    
+    return render_template('courseStudents.html', table=q)
+
+# @app.route('/editgrade/<string:coursename>/<int:teacherid>', methods=["PUT"])
+# @ login_required
+# def editGrade(coursename, teacherid):
 
 
 @app.route('/register', methods=["POST"])

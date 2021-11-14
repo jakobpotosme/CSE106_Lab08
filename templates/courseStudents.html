@@ -1,0 +1,38 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
+
+
+
+<form action="/logout" method="post">
+    <button id='logoutBtn' onclick="logout()">Logout</button>
+</form>
+
+<h1>  {{table[0][0]}}</h1>
+
+<table>
+    <div>
+        <tr>
+            <th>Student Name</th>
+            <th>Grade</th>
+            
+        </tr>
+    </div>
+
+    {% for row in range(0,table|length ) %}
+    <tr>
+
+        <td>
+            {{table[row][2]}}
+        </td>
+        <td>
+            <p><a href="/editgrade/">
+                {{ table[row][1].grade}}
+            </a>
+            </p>
+            
+        </td>
+      
+
+    </tr>
+    {% endfor %}
+</table>
