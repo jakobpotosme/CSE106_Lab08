@@ -28,7 +28,10 @@
         <tr>
 
             <td>
-                {{classInfo[row].courseName}}
+                <p><a href="/studentsincourse/{{classInfo[row].courseName}}/{{ teachers[row].id }}">
+                    {{classInfo[row].courseName}}
+                </a>
+                </p>
             </td>
             <td>
                 {{ teachers[row].name }}
@@ -42,7 +45,10 @@
 
         </tr>
         {% endfor %}
-        </table>   
+        </table>
         </div>
+        <input type="text" placeholder="Name" name="name">
+        <input type="text" placeholder="Grade" name="Grade">
+        <button value="submit" onclick= function() type="submit">Edit</button>
     </body>
 </html>
