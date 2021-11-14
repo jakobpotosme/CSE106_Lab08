@@ -174,23 +174,20 @@
         <div>
             <tr>
                 <th>Course Name</th>
-                <th>Teacher</th>
+                <!-- <th>Teacher</th> -->
                 <th>Time</th>
                 <th>Students Enrolled</th>
                 <th>Capacity</th>
                 <th>Add Class</th>
             </tr>
         </div>
-
+    
         {% for row in range(0,allClasses|length ) %}
-        {% print(row)%}
+        
         <tr>
 
             <td name="courseName">
                 {{allClasses[row].courseName}}
-            </td>
-            <td name="teacherName">
-                teacher goes here
             </td>
             <td name="courseTime">
                 {{allClasses[row].time}}
