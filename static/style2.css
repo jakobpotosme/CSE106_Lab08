@@ -1,0 +1,33 @@
+h1 { text-align: center;
+}
+body{
+    background-color: aliceblue;
+}
+.welcome{
+    position: fixed;
+    left: 10px;
+    top: 5px;
+}
+.logoutLblPos{
+position: fixed;
+right: 10px;
+top: 5px;
+}
+.boxed{
+    border: 1px solid Blue;
+}  
+ table, td, th{
+border: 1 px solid black;
+text-align: left;
+} 
+
+table{
+    background-color: cornflowerblue;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td{
+    border: 1px solid black;
+    padding: 15px;
+}
