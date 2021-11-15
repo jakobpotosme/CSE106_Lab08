@@ -242,13 +242,16 @@ def register():
     courseId = request.form['submitBtn']
     studentId = request.form['student']
 
+    # print(courseId)
+    # print(studentId)
     # Gets class information related to courseID
     currentClassInfo = Classes.query.filter_by(id=courseId).first()
     # print(currentClassInfo.numEnrolled)
 
     # Checks if student is already enrolled in course
     exists = db.session.query(Enrollment.class_id).filter_by(
-        class_id=courseId).first() is not None
+        class_id=courseId).filter_by(student_id=studentId).first() is not None
+
     # print(exists)
 
     # Checks if there is space and if student is enrolled in course
