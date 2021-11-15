@@ -1,3 +1,4 @@
+
 input[type=text] {
   display: list-item;
   padding: 10px;
@@ -8,34 +9,23 @@ input[type=text] {
 h1{
   margin-bottom: 1cm;
   align-items: center;
-  text-align: center;
+  font-family: sans-serif;
 }
-body{
-    background-color: azure;
-    text-align: center;
-}
-form{ 
-    display: inline-block;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
+
 #outer-box-login{
-  margin: auto;
+  margin-top: 50px;
   padding: 200px;
-  width: 50%;
+  width: 40%;
   length: 1000px;
-  background-color: AliceBlue;
+  background-color: #3a64b4;
   border: 4px solid darkblue;
   border-radius: 25px;
-  position: relative;
 }
 #login-container{
 
   align-items: center;
   justify-content: center;
   display: flex;
-  background-color: light blue;
 }
 #outer-box-student{
   margin-top: 50px;
@@ -43,13 +33,12 @@ form{
   padding-right: 30px;
   width: 1000px;
   length: 1000px;
-  background-color: aliceblue;
+  background-color: #3a64b4;
   border: 4px solid darkblue;
   border-radius: 25px;
 }
 #student-container{
   display: grid;
-  
 }
 
 .row1{
@@ -59,6 +48,7 @@ form{
 .row2{
   grid-column: 1 / 3;
 }
+
 .student-title{
   text-align: center;
 }
@@ -68,8 +58,11 @@ form{
   margin-left: auto;
   margin-right: auto;
 }
+
 #nav-tab button{
   width: 50%;
+  background-color: lightgrey;
+  color: black;
 }
 #nav-tab .active{
   background-color: white;
@@ -77,46 +70,26 @@ form{
 #nav-tab button:hover{
   background-color: white;
 }
-#logoutBtn{
-  width: 10%;
-  position: fixed;
-  right: 10px;
-  top: 5px;
-  background-color: Silver;
-  
+
+#logoutBtnDiv{
+  margin-top: 10px;
+  width: 70%;
+  grid-column-start: 2;
+  grid-column-end: end;
+  grid-row: 1;
+  position: relative;
+
 }
+
+#logoutBtnDiv :hover{
+  border: solid blue 1px;
+  background-color: white;
+}
+
 button{
   border-radius: 4px;
   padding: 5px;
   border: 0px;
   width: 100%;
-  background-color: Silver;
-}
-.boxed{
-    border: 1px solid Blue;
-}  
- table, td, th{
-border: 1 px solid black;
-text-align: left;
-} 
 
-table{
-    background-color: SteelBlue;
-    border-collapse: collapse;
-    width: 100%;
-}
-
-th, td{
-    border: 1px solid black;
-    padding: 15px;
-}
-
-input[type=button],input[type=submit],button{
-    background-color: MintCream;
-    width: 180px;
-    height:30px;
-    line-height:20px;
-    border:none;
-    cursor:pointer;
-    font-weight: bold;
 }
