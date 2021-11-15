@@ -172,7 +172,6 @@ def teacher(currentTeacherId):
     return render_template('teacher.html', classInfo=classes, teachers=teachers)
 
 
-
 @ app.route('/student/<int:currentStudentId>', methods=['GET', 'POST'])
 @ login_required
 def student(currentStudentId):
@@ -203,28 +202,37 @@ def student(currentStudentId):
 
     return render_template('student.html', classInfo=classes, teachers=teachers, allClasses=allClasses, student=currentStudent)
 
+
 @app.route('/studentsincourse/<string:coursename>/<int:teacherid>', methods=["GET"])
 @ login_required
 def studentsincourse(coursename, teacherid):
 
+    q = db.session.query(Classes, Enrollment, Students).filter(Classes.teacher_id == teacherid).filter(
+        Classes.courseName == coursename).filter(Classes.id == Enrollment.class_id).filter(Enrollment.student_id == Students.id).all()
+    print(q)
 
-    q = db.session.query(Classes, Enrollment, Students).filter(Classes.teacher_id == teacherid).filter(Classes.courseName == coursename).filter(Classes.id == Enrollment.class_id).filter(Enrollment.student_id == Students.id).all()
-    
-    
-    return render_template('courseStudents.html', table=q)
+    return render_template('courseStudents.html', table=q, teacherid=teacherid)
 
 
-@app.route('/editgrade', methods=["Post"])
+@app.route('/editgrade', methods=["POST"])
 @ login_required
 def editGrade():
     studentId = request.form['studentid']
     classId = request.form['classid']
     grade = request.form['grade']
-    student = Enrollment.query.filter_by(class_id=classId,student_id=studentId).first()
+    teacherId = request.form['teacherId']
+
+    print(classId)
+    print(teacherId)
+    print(studentId)
+
+    student = Enrollment.query.filter_by(
+        class_id=classId, student_id=studentId).first()
+    print(student.id)
     student.grade = grade
     db.session.commit()
 
-    return 'hi'
+    return redirect(url_for('teacher', currentTeacherId=teacherId))
 
 
 @app.route('/register', methods=["POST"])
