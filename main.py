@@ -144,7 +144,7 @@ def login():
                     print('not student or teacher...redirecting to admin')
                     return redirect(url_for('login'))
                 else:
-                    return render_template('teacher.html', teacher=userType)
+                    return redirect(url_for('teacher', currentTeacherId=userType.id))
             else:
                 print('Successfully logging in student')
                 # print(user.id)
@@ -153,13 +153,13 @@ def login():
     return render_template('login.html')
 
 
-@ app.route('/teacher/<int:currentTeacherId>', methods=['GET', 'POST'])
+@ app.route('/teacher/<int:currentTeacherId>', methods=['GET'])
 @ login_required
 def teacher(currentTeacherId):
 
     q = db.session.query(Classes).filter(
         Classes.teacher_id == currentTeacherId).all()
-        
+
     classes = []
     for i in q:
         classes.append(i)
@@ -168,7 +168,7 @@ def teacher(currentTeacherId):
     for i in classes:
         teachers.append(Teachers.query.filter_by(id=i.teacher_id).first())
 
-
+    # print("hi")
     return render_template('teacher.html', classInfo=classes, teachers=teachers)
 
 
