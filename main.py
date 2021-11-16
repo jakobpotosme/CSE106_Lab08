@@ -128,7 +128,8 @@ def login():
         username += request.form['username']
         password += request.form['password']
 
-        user = Users.query.filter_by(username=username).first()
+        user = Users.query.filter_by(username=username).filter_by(
+            password=password).first()
 
         if user is None or user.check_password(password) is None:
             return redirect(url_for('login'))
