@@ -1,18 +1,26 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Info</title>
 
-<link rel="stylesheet" href="..\static\style2.css">
-
-<form action="/logout" method="post">
-    <button id='logoutBtn' onclick="logout()">Logout</button>
-</form>
+    <link rel="stylesheet" href="../static/style2.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
-<button> <a href="/teacher/{{teacherid}}" class="btn btn-primary">Back</a> </button> 
+    
+</head>
+<body>
+
+    <form action="/logout" method="post">
+        <button id='logoutBtn' onclick="logout()">Logout</button>
+    </form>
+        
+    <button> <a href="/teacher/{{teacherid}}" class="btn btn-primary">Back</a> </button> 
 
 
-<h1>  {{table[0][0]}}</h1>
+    <h1>  {{table[0][0]}}</h1>
 
-<table>
+    <table>
     <div>
         <tr>
             <th>Student Name</th>
@@ -49,7 +57,6 @@
         
     {% endfor %}
 </table>
-<<<<<<< HEAD
-</form>
-=======
->>>>>>> c232214a3461fd766c6447f522bd5546c381126c
+
+</body>
+</html>
