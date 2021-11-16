@@ -14,20 +14,21 @@ body{
     background-color: azure;
     text-align: center;
 }
-form{ 
+form{
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
 }
-
+#logbtn{
+  background-color: lightgrey;
+}
 .logoutLbl{
   width: 10%;
   position: fixed;
   right: 10px;
   top: 5px;
-  background-color: Silver;
-  
+
 }
 button{
   border-radius: 4px;
@@ -38,11 +39,11 @@ button{
 }
 .boxed{
     border: 1px solid Blue;
-}  
+}
  table, td, th{
 border: 1 px solid black;
 text-align: left;
-} 
+}
 
 table{
     background-color: SteelBlue;

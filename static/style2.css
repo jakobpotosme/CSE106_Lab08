@@ -11,11 +11,11 @@ top: 5px;
 }
 .boxed{
     border: 1px solid Blue;
-}  
+}
  table, td, th{
 border: 1 px solid black;
 text-align: left;
-} 
+}
 
 table{
     background-color: cornflowerblue;
