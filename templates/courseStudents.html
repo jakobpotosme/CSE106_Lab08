@@ -62,8 +62,30 @@
         </table>
     </div>
 
+    <<<<<<< HEAD </body> </html>======={% for row in range(0,table|length ) %} <tr>
 
+        <td>
+            {{table[row][2]}}
+        </td>
+        <td>
+            <p>
+                {{ table[row][1].grade}}
+            </p>
 
-</body>
+        </td>
+        <form action="/editgrade" method="Post">
+            <td>
+                <input type="hidden" name='teacherId' value="{{teacherid}}" />
+                <input type="hidden" name='studentid' value="{{table[row][1].student_id}}" />
+                <input type="hidden" name='classid' value="{{table[row][1].class_id}}" />
+                <input type="text" id="grade" name="grade" value="">
+                <button type="submit" value="Submit">Edit</button>
+            </td>
+        </form>
 
-</html>
+        </tr>
+
+        {% endfor %}
+        </table>
+        <<<<<<< HEAD </form> </body> </html>=======>>>>>>> c232214a3461fd766c6447f522bd5546c381126c
+            >>>>>>> aeb6dded7496b9d590134fe7d0681babe4e2eec8

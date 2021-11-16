@@ -1,4 +1,10 @@
-
+input[type=text] {
+  display: list-item;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid darkblue;
+  font-weight: bold;
+}
 h1{
   margin-bottom: 1cm;
   align-items: center;
@@ -15,7 +21,7 @@ form{
     text-align: center;
 }
 
-#logoutBtn{
+.logoutLbl{
   width: 10%;
   position: fixed;
   right: 10px;
@@ -30,9 +36,11 @@ button{
   width: 100%;
   background-color: Silver;
 }
-
-table, td, th{
-border: 1px solid black;
+.boxed{
+    border: 1px solid Blue;
+}  
+ table, td, th{
+border: 1 px solid black;
 text-align: left;
 } 
 
@@ -47,6 +55,15 @@ th, td{
     padding: 15px;
 }
 
+input[type=button],input[type=submit],button{
+    background-color: MintCream;
+    width: 180px;
+    height:30px;
+    line-height:20px;
+    border:none;
+    cursor:pointer;
+    font-weight: bold;
+}
 
 .btn {
     width: 10%;
@@ -55,8 +72,3 @@ th, td{
     top: 5px;
     background-color: Silver;
 }
-
-
-/* #courseInfoBody {
-   color: black;
- } */
