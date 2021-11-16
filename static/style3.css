@@ -21,7 +21,7 @@ form{
     text-align: center;
 }
 
-#logoutBtn{
+.logoutLbl{
   width: 10%;
   position: fixed;
   right: 10px;
