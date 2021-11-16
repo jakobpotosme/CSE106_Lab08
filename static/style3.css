@@ -1,0 +1,74 @@
+input[type=text] {
+  display: list-item;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 2px solid darkblue;
+  font-weight: bold;
+}
+h1{
+  margin-bottom: 1cm;
+  align-items: center;
+  text-align: center;
+}
+body{
+    background-color: azure;
+    text-align: center;
+}
+form{ 
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#logoutBtn{
+  width: 10%;
+  position: fixed;
+  right: 10px;
+  top: 5px;
+  background-color: Silver;
+  
+}
+button{
+  border-radius: 4px;
+  padding: 5px;
+  border: 0px;
+  width: 100%;
+  background-color: Silver;
+}
+.boxed{
+    border: 1px solid Blue;
+}  
+ table, td, th{
+border: 1 px solid black;
+text-align: left;
+} 
+
+table{
+    background-color: SteelBlue;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td{
+    border: 1px solid black;
+    padding: 15px;
+}
+
+input[type=button],input[type=submit],button{
+    background-color: MintCream;
+    width: 180px;
+    height:30px;
+    line-height:20px;
+    border:none;
+    cursor:pointer;
+    font-weight: bold;
+}
+
+.btn {
+    width: 10%;
+    position: fixed;
+    left: 10px;
+    top: 5px;
+    background-color: Silver;
+}
