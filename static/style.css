@@ -93,3 +93,52 @@ button{
   width: 100%;
 
 }
+
+/* ------------------- */
+/* TEACHER STYLING BELOW */
+
+#teacherH1{
+  text-align: center;
+}
+
+#teacherBody{
+  background-color: aliceblue;
+}
+
+.logoutLblPos {
+  position: fixed;
+  right: 10px;
+  top: 5px;
+}
+
+.boxed {
+  border: 1px solid Blue;
+}
+
+ table{
+   border: 1px solid black;
+   text-align: left;
+   background-color: cornflowerblue;
+   border-collapse: collapse;
+   width: 100%;
+ }
+ th,
+ td {
+   border: 1px solid black;
+   padding: 15px;
+   text-align: left;
+ }
+ /*  */
+ /* STUDENT COURSE INFO BELOW */
+
+
+ /* #courseInfoH1{
+   margin-bottom: 1cm;
+   align-items: center;
+   text-align: center;
+ } */
+
+ #courseInfoBody{
+   background-color: azure;
+   text-align: center;
+ }

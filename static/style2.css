@@ -3,11 +3,7 @@ h1 { text-align: center;
 body{
     background-color: aliceblue;
 }
-.welcome{
-    position: fixed;
-    left: 10px;
-    top: 5px;
-}
+
 .logoutLblPos{
 position: fixed;
 right: 10px;
@@ -30,4 +26,5 @@ table{
 th, td{
     border: 1px solid black;
     padding: 15px;
+    text-align: left;
 }

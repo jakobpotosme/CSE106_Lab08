@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="eng">
-    <head>
-        <title>Instructor</title>
-        <link rel="stylesheet" href="..\static\style2.css">
-        <script language="JavaScript" src="script.js" type="text/javascript"></script>
-    </head>
-    <body>
-        <h1> Welcome {{ teachers[0].name }}</h1>
-        
-        <form align="right" name="form2" method="post" action="/logout">
-            <label class="logoutLblPos">
-                <input name="submit2" type="submit" id="submit2" value="log out">
-            </label>
-        </form>
-        <div class="boxed">
+
+<head>
+    <title>Instructor</title>
+    <link rel="stylesheet" href="..\static\style.css">
+    <script language="JavaScript" src="script.js" type="text/javascript"></script>
+</head>
+
+<body id="teacherBody">
+    <h1 id="teacherH1"> Welcome {{ teachers[0].name }}</h1>
+
+    <form align="right" name="form2" method="post" action="/logout">
+        <label class="logoutLblPos">
+            <input name="submit2" type="submit" id="submit2" value="log out">
+        </label>
+    </form>
+    <div class="boxed">
         <table>
             <tr>
                 <th>Course Name</th>
@@ -22,28 +24,29 @@
                 <th>Student Enrolled</th>
             </tr>
             {% for row in range(0,classInfo|length ) %}
-        <tr>
+            <tr>
 
-            <td>
-                <p><a href="/studentsincourse/{{classInfo[row].courseName}}/{{ teachers[row].id }}">
-                    {{classInfo[row].courseName}}
-                </a>
-                </p>
-            </td>
-            <td>
-                {{ teachers[row].name }}
-            </td>
-            <td>
-                {{classInfo[row].time}}
-            </td>
-            <td>
-                {{classInfo[row].numEnrolled}}
-            </td>
+                <td>
+                    <p><a href="/studentsincourse/{{classInfo[row].courseName}}/{{ teachers[row].id }}">
+                            {{classInfo[row].courseName}}
+                        </a>
+                    </p>
+                </td>
+                <td>
+                    {{ teachers[row].name }}
+                </td>
+                <td>
+                    {{classInfo[row].time}}
+                </td>
+                <td>
+                    {{classInfo[row].numEnrolled}}
+                </td>
 
-        </tr>
-        {% endfor %}
+            </tr>
+            {% endfor %}
         </table>
-        </div>
+    </div>
 
-    </body>
+</body>
+
 </html>

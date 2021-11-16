@@ -204,7 +204,7 @@ def student(currentStudentId):
     return render_template('student.html', classInfo=classes, teachers=teachers, allClasses=allClasses, student=currentStudent)
 
 
-@app.route('/studentsincourse/<string:coursename>/<int:teacherid>', methods=["GET"])
+@app.route('/studentsincourse/<string:coursename>/<int:teacherid>', methods=["GET", 'POST'])
 @ login_required
 def studentsincourse(coursename, teacherid):
 

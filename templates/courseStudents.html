@@ -1,61 +1,69 @@
-<link rel="stylesheet" href="../static/style3.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
-</script>
+<!DOCTYPE html>
+<html lang="eng">
 
+<head>
 
-<form action="/logout" method="post">
-    <button id='logoutBtn' onclick="logout()">Logout</button>
-</form>
-    
+    <title>Class Information</title>
+    <!-- <link rel="stylesheet" type="text/css" href="./static/style.css" /> -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style3.css') }}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
-<body>
+
+<body id="courseInfoBody">
+
 
     <form action="/logout" method="post">
         <button id='logoutBtn' onclick="logout()">Logout</button>
     </form>
-        
-    <button> <a href="/teacher/{{teacherid}}" class="btn btn-primary">Back</a> </button> 
+
+    <button> <a href="/teacher/{{teacherid}}" class="btn btn-primary">Back</a> </button>
 
 
-    <h1>  {{table[0][0]}}</h1>
+    <h1 id="courseInfoH1"> {{table[0][0]}}</h1>
+    <div class="boxed">
+        <table>
+            <div>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Grade</th>
+                    <th>Edit Grade</th>
+                </tr>
+            </div>
 
-    <table>
-    <div>
-        <tr>
-            <th>Student Name</th>
-            <th>Grade</th>    
-            <th>Edit Grade</th>
-        </tr>
+            {% for row in range(0,table|length ) %}
+
+
+            <tr>
+
+                <td>
+                    {{table[row][2]}}
+                </td>
+                <td>
+                    <p>
+                        {{ table[row][1].grade}}
+                    </p>
+
+                </td>
+                <form action="/editgrade" method="Post">
+                    <td>
+                        <input type="hidden" name='teacherId' value="{{teacherid}}" />
+                        <input type="hidden" name='studentid' value="{{table[row][1].student_id}}" />
+                        <input type="hidden" name='classid' value="{{table[row][1].class_id}}" />
+                        <input type="text" id="grade" name="grade" value="">
+                        <button type="submit" value="Submit">Edit</button>
+                    </td>
+                </form>
+
+            </tr>
+
+            {% endfor %}
+        </table>
     </div>
 
-    {% for row in range(0,table|length ) %}
 
-        
-        <tr>
-
-            <td>
-                {{table[row][2]}}
-            </td>
-            <td>
-                <p>
-                    {{ table[row][1].grade}}
-                </p>
-                
-            </td>
-            <form action="/editgrade" method="Post">
-            <td>
-                <input type="hidden" name='teacherId' value="{{teacherid}}" />
-                <input type="hidden" name='studentid' value="{{table[row][1].student_id}}" />
-                <input type="hidden" name='classid' value="{{table[row][1].class_id}}" />
-                <input type="text" id="grade" name="grade" value="">
-                <button type="submit" value="Submit">Edit</button>
-            </td>
-            </form>
-
-        </tr>
-        
-    {% endfor %}
-</table>
 
 </body>
+
 </html>
