@@ -239,12 +239,12 @@ def editGrade():
 @app.route('/register', methods=["POST"])
 @ login_required
 def register():
-
+    # print('here')
     courseId = request.form['submitBtn']
     studentId = request.form['student']
 
-    # print(courseId)
-    # print(studentId)
+    print(courseId)
+    print(studentId)
     # Gets class information related to courseID
     currentClassInfo = Classes.query.filter_by(id=courseId).first()
     # print(currentClassInfo.numEnrolled)
@@ -269,10 +269,10 @@ def register():
 
     elif(exists is True):
 
-        return 'You are already in this course!'
+        return jsonify({'error': 'You are already in this course!'})
     else:
 
-        return jsonify({'response': 'Class Full!'})
+        return jsonify({'error': 'Class Full!'})
 
 
 @app.route('/logout', methods=['POST'])
