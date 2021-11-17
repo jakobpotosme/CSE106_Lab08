@@ -9,6 +9,20 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <script>
+      function ajaxNoRef()
+      {
+        var data = new FormData();
+        data.append('Grade', document.getElementById("grade").value);
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "/editGrade")
+        xhttp.send(data);
+        return false;
+      }
+
+    </script>
+
 </head>
 
 <body id="courseInfoBody">
@@ -47,7 +61,7 @@
                     </p>
 
                 </td>
-                <form action="/editgrade" method="Post">
+                <form onsubmit=ajaxNoRef() method="Post" >
                     <td>
                         <input type="hidden" name='teacherId' value="{{teacherid}}" />
                         <input type="hidden" name='studentid' value="{{table[row][1].student_id}}" />
